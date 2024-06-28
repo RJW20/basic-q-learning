@@ -1,6 +1,6 @@
 from typing import Callable, Hashable
 
-from q_learning.state.state import State
+from q_learning.state import State
 
 
 class Action:
