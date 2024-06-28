@@ -11,5 +11,9 @@ class Action:
         self._effect_on_state: Callable[[Hashable], Hashable] = effect_on_state
 
     def act_on(self, state: State) -> State:
-        """Return the State achieved by taking this action from the given state."""
+        """Return the State achieved by taking this Action from the given State."""
         return State(self._effect_on_state(state._identifier))
+    
+    def __hash__(self) -> int:
+        """Return the hash of this Action effect function."""
+        return hash(self._effect_on_state)
