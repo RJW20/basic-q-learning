@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "q-learning"
+version = "0.1.0"
+description = "Implementation of basic Q-learning with a Q-table, written in Python."
+authors = ["RJW20"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
