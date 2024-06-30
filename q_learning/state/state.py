@@ -7,7 +7,6 @@ class State:
     """Unique State in the Agent's environment."""
 
     def __init__(self, identifier: Hashable) -> None:
-
         self._identifier: Hashable = identifier
 
         # Test that this State is valid
