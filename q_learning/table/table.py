@@ -21,7 +21,8 @@ class Table(dict):
             raise RowError(f"Row {row_label} already exists in the Table.")
         except KeyError:
             super().__setitem__(
-                row_label, {column_label: value for column_label, value in row}
+                row_label,
+                {column_label: value for column_label, value in row},
             )
 
     def get_row(self, row_label: Hashable) -> dict[Hashable, Any]:
