@@ -11,7 +11,8 @@ class Table(dict):
 
     def add_row(
         self,
-        row_label: Hashable, row: list[tuple[Hashable, Any]],
+        row_label: Hashable,
+        row: list[tuple[Hashable, Any]],
     ) -> None:
         """Add a new row entry.
 
