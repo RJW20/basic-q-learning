@@ -1,6 +1,6 @@
 from typing import Any, Hashable
 
-from q_learning.table.error import ColumnError, RowError
+from q_learning.table.errors import ColumnError, RowError
 
 
 class Table(dict):
@@ -39,7 +39,11 @@ class Table(dict):
         except KeyError:
             raise RowError(f"Row {row_label} does not exist in the Table.")
 
-    def get_element_at(self, row_label: Hashable, column_label: Hashable) -> Any:
+    def get_element_at(
+        self,
+        row_label: Hashable,
+        column_label: Hashable
+    ) -> Any:
         """Return the value in row row_label in position column_label.
 
         If the row doesn't exist then raises a RowError.
