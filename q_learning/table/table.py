@@ -9,7 +9,7 @@ class Table(dict):
     Implemented as a dictionary of dictionaries.
     """
 
-    def add_row(
+    def new_row(
         self,
         row_label: Hashable,
         row: list[tuple[Hashable, Any]],
@@ -18,7 +18,7 @@ class Table(dict):
 
         If the row already exists then raises a RowError.
         """
-        
+
         try:
             super().__getitem__(row_label)
             raise RowError(f"Row {row_label} already exists in the Table.")
@@ -39,7 +39,7 @@ class Table(dict):
         except KeyError:
             raise RowError(f"Row {row_label} does not exist in the Table.")
 
-    def element_at(self, row_label: Hashable, column_label: Hashable) -> Any:
+    def get_element_at(self, row_label: Hashable, column_label: Hashable) -> Any:
         """Return the value in row row_label in position column_label.
 
         If the row doesn't exist then raises a RowError.
