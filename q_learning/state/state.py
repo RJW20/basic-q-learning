@@ -13,7 +13,10 @@ class State:
         try:
             self.__hash__()
         except TypeError:
-            raise StateError(f"Unable to instatiate State with identifier {identifier} as it is not hashable.")
+            raise StateError(
+                f"Unable to instatiate State with identifier {identifier} as "
+                + "it is not hashable."
+            )
 
     def __hash__(self) -> int:
         """Return the hash of this States identifier."""
