@@ -7,7 +7,16 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+ruff = "^0.5.0"
 
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "N"]
+ignore = [
+    "W293",     # White space on blank lines
+]
 
 [build-system]
 requires = ["poetry-core"]
