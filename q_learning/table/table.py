@@ -18,6 +18,7 @@ class Table(dict):
 
         If the row already exists then raises a RowError.
         """
+        
         try:
             super().__getitem__(row_label)
             raise RowError(f"Row {row_label} already exists in the Table.")
