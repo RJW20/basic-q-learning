@@ -38,12 +38,29 @@ class Table(dict):
             return super().__getitem__(row_label)
         except KeyError:
             raise RowError(f"Row {row_label} does not exist in the Table.")
-
-    def get_element_at(
+        
+    def __setitem__(
         self,
         row_label: Hashable,
-        column_label: Hashable
-    ) -> Any:
+        column_label: Hashable,
+        value: Any,
+    ) -> None:
+        """Set the value in row row_label in position column_label.
+
+        If the row doesn't exist then raises a RowError.
+        If the column doesn't exist within the row then raises a ColumnError.
+        """
+
+        try:
+            self.get_row(row_label)
+            row_label[column_label] = value
+        except KeyError:
+            raise ColumnError(
+                f"Column {column_label} does not have a value in the row "
+                + "{row_label}."
+            )
+
+    def __getitem__(self, row_label: Hashable, column_label: Hashable) -> Any:
         """Return the value in row row_label in position column_label.
 
         If the row doesn't exist then raises a RowError.
