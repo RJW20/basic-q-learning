@@ -29,13 +29,14 @@ class Train(BaseVisual):
         discount_factor = settings['discount_factor']
 
         # Create the QTable
+        states = self.states
         states_and_actions = [
             (state, [
                 action for action in self.actions
                 if state._identifier not in self.cats | {self.cheese} and
-                action.act_on(state) in self.states
+                action.act_on(state) in states
             ])
-            for state in self.states
+            for state in states
         ]
         q_table = QTable(states_and_actions)
 
@@ -65,8 +66,8 @@ class Train(BaseVisual):
         )
 
     @property
-    def states(self) -> list[State]:
-        """Return a list of all possible States.
+    def states(self) -> set[State]:
+        """Return a set of all possible States.
         
         This is comprised of all positions contained in the grid with size
         self.grid_size.
