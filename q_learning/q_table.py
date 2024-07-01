@@ -43,12 +43,16 @@ class QTable(Table):
         in the row State.
         
         If the row State doesn't exist then raises a StateError.
+        If the State has no Actions then raises an Action Error.
         """
 
         try:
             actions = super().get_row(state)
-            best_action = max(actions, key=actions.get)
-            return best_action, actions[best_action]
+            try:
+                best_action = max(actions, key=actions.get)
+                return best_action, actions[best_action]
+            except ValueError:
+                raise ActionError(f"The State {state} has no valid Actions.")
         except RowError:
             raise StateError(
                 f"The State {state} does not exist in the QTable, please "
