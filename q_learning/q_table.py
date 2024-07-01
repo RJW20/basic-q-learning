@@ -59,7 +59,11 @@ class QTable(Table):
                 + "check your initial list of States is comprehensive."
             )
         
-    def __setitem__(self, state: State, action: Action, q_value: float) -> None:
+    def __setitem__(
+        self,
+        state_action: tuple[State, Action],
+        q_value: float,
+    ) -> None:
         """Set the q_value associateed with the given Action at the given State.
         
         If the row State doesn't exist then raises a StateError.
@@ -68,20 +72,21 @@ class QTable(Table):
         """
 
         try:
-            super.__setitem__(state, action, q_value)
+            super().__setitem__(state_action, q_value)
         except RowError:
             raise StateError(
-                f"The State {state} does not exist in the QTable, please "
-                + "check your initial list of States is comprehensive."
+                f"The State {state_action[0]} does not exist in the "
+                + "QTable, please check your initial list of States is "
+                + "comprehensive."
             )
         except ColumnError:
             raise ActionError(
-                f"The State-Action pair {(state, action)} does not exist in "
-                + "the QTable, please check your initial list of States "
-                + "and Actions is comprehensive."
+                f"The State-Action pair {state_action} does not exist in "
+                + "the QTable, please check your initial list of States and "
+                + "Actions is comprehensive."
             )
         
-    def __getitem__(self, state: State, action: Action) -> float:
+    def __getitem__(self, state_action: tuple[State, Action]) -> float:
         """Get the Q-value associated with the given Action at the given State.
         
         If the row State doesn't exist then raises a StateError.
@@ -90,17 +95,18 @@ class QTable(Table):
         """
 
         try:
-            return super.__getitem__(state, action)
+            return super().__getitem__(state_action)
         except RowError:
             raise StateError(
-                f"The State {state} does not exist in the QTable, please "
-                + "check your initial list of States is comprehensive."
+                f"The State {state_action[0]} does not exist in the "
+                + "QTable, please check your initial list of States is "
+                + "comprehensive."
             )
         except ColumnError:
             raise ActionError(
-                f"The State-Action pair {(state, action)} does not exist in "
-                + "the QTable, please check your initial list of States "
-                + "and Actions is comprehensive."
+                f"The State-Action pair {state_action} does not exist in "
+                + "the QTable, please check your initial list of States and "
+                + "Actions is comprehensive."
             )
 
     def update(

@@ -41,8 +41,7 @@ class Table(dict):
         
     def __setitem__(
         self,
-        row_label: Hashable,
-        column_label: Hashable,
+        row_column_labels: tuple[Hashable, Hashable],
         value: Any,
     ) -> None:
         """Set the value in row row_label in position column_label.
@@ -51,25 +50,30 @@ class Table(dict):
         If the column doesn't exist within the row then raises a ColumnError.
         """
 
+        row_label, column_label = row_column_labels
+
         try:
-            self.get_row(row_label)
-            row_label[column_label] = value
+            row = self.get_row(row_label)
+            row[column_label] = value
+            super().__setitem__(row_label, row)
         except KeyError:
             raise ColumnError(
                 f"Column {column_label} does not have a value in the row "
                 + "{row_label}."
             )
 
-    def __getitem__(self, row_label: Hashable, column_label: Hashable) -> Any:
+    def __getitem__(self, row_column_labels: tuple[Hashable, Hashable]) -> Any:
         """Return the value in row row_label in position column_label.
 
         If the row doesn't exist then raises a RowError.
         If the column doesn't exist within the row then raises a ColumnError.
         """
 
+        row_label, column_label = row_column_labels
+
         try:
-            self.get_row(row_label)
-            return row_label[column_label]
+            row = self.get_row(row_label)
+            return row[column_label]
         except KeyError:
             raise ColumnError(
                 f"Column {column_label} does not have a value in the row "

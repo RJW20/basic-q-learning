@@ -38,7 +38,11 @@ class RewardTable(Table):
                 + "check your list of States for duplicates."
             )
 
-    def __setitem__(self, state: State, action: Action, reward: float) -> None:
+    def __setitem__(
+        self,
+        state_action: tuple[State, Action],
+        reward: float,
+    ) -> None:
         """Set the reward for taking the given Action from the given State.
         
         If the row State doesn't exist then raises a StateError.
@@ -47,20 +51,21 @@ class RewardTable(Table):
         """
 
         try:
-            super.__setitem__(state, action, reward)
+            super().__setitem__(state_action, reward)
         except RowError:
             raise StateError(
-                f"The State {state} does not exist in the RewardTable, please "
-                + "check your initial list of States is comprehensive."
+                f"The State {state_action[0]} does not exist in the "
+                + "RewardTable, please check your initial list of States is "
+                + "comprehensive."
             )
         except ColumnError:
             raise ActionError(
-                f"The State-Action pair {(state, action)} does not exist in "
+                f"The State-Action pair {state_action} does not exist in "
                 + "the RewardTable, please check your initial list of States "
                 + "and Actions is comprehensive."
             )
         
-    def __getitem__(self, state: State, action: Action) -> float:
+    def __getitem__(self, state_action: tuple[State, Action]) -> float:
         """Get the reward for taking the given Action from the given State.
         
         If the row State doesn't exist then raises a StateError.
@@ -69,15 +74,16 @@ class RewardTable(Table):
         """
 
         try:
-            return super.__getitem__(state, action)
+            return super().__getitem__(state_action)
         except RowError:
             raise StateError(
-                f"The State {state} does not exist in the RewardTable, please "
-                + "check your initial list of States is comprehensive."
+                f"The State {state_action[0]} does not exist in the "
+                + "RewardTable, please check your initial list of States is "
+                + "comprehensive."
             )
         except ColumnError:
             raise ActionError(
-                f"The State-Action pair {(state, action)} does not exist in "
+                f"The State-Action pair {state_action} does not exist in "
                 + "the RewardTable, please check your initial list of States "
                 + "and Actions is comprehensive."
             )
