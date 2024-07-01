@@ -1,4 +1,4 @@
-from q_learning.action import Action
+from q_learning.action import Action, ActionError
 from q_learning.state import State, StateError
 from q_learning.table import ColumnError, RowError, Table
 
@@ -54,7 +54,7 @@ class RewardTable(Table):
                 + "check your initial list of States is comprehensive."
             )
         except ColumnError:
-            raise Action(
+            raise ActionError(
                 f"The State-Action pair {(state, action)} does not exist in "
                 + "the RewardTable, please check your initial list of States "
                 + "and Actions is comprehensive."
@@ -76,7 +76,7 @@ class RewardTable(Table):
                 + "check your initial list of States is comprehensive."
             )
         except ColumnError:
-            raise Action(
+            raise ActionError(
                 f"The State-Action pair {(state, action)} does not exist in "
                 + "the RewardTable, please check your initial list of States "
                 + "and Actions is comprehensive."
