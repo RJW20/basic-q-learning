@@ -1,10 +1,14 @@
-from q_learning.action import Action
+from q_learning.action import Action, ActionError
 from q_learning.state import State, StateError
-from q_learning.table import RowError, Table
+from q_learning.table import ColumnError, RowError, Table
 
 
 class QTable(Table):
-    """Q-table developed by the Agent to choose Actions."""
+    """Q-table used by the Agent to choose Actions.
+    
+    Develops over time to improve its entries to enable the Agent to choose
+    better Actions.
+    """
 
     def __init__(
         self,
@@ -33,3 +37,78 @@ class QTable(Table):
                 f"The State {state} already exists in the QTable, please "
                 + "check your list of States for duplicates."
             )
+
+    def best_action(self, state: State) -> tuple[Action, float]:
+        """Return the Action and its Q-value for the Action with highest Q-value
+        in the row State.
+        
+        If the row State doesn't exist then raises a StateError.
+        """
+
+        try:
+            actions = super().get_row(state)
+            best_action = max(actions, key=actions.get)
+            return best_action, actions[best_action]
+        except RowError:
+            raise StateError(
+                f"The State {state} does not exist in the QTable, please "
+                + "check your initial list of States is comprehensive."
+            )
+        
+    def __setitem__(self, state: State, action: Action, q_value: float) -> None:
+        """Set the q_value associateed with the given Action at the given State.
+        
+        If the row State doesn't exist then raises a StateError.
+        If the action Action doesn't does't exist for the State then raises an
+        ActionError.
+        """
+
+        try:
+            super.__setitem__(state, action, q_value)
+        except RowError:
+            raise StateError(
+                f"The State {state} does not exist in the QTable, please "
+                + "check your initial list of States is comprehensive."
+            )
+        except ColumnError:
+            raise ActionError(
+                f"The State-Action pair {(state, action)} does not exist in "
+                + "the QTable, please check your initial list of States "
+                + "and Actions is comprehensive."
+            )
+        
+    def __getitem__(self, state: State, action: Action) -> float:
+        """Get the Q-value associated with the given Action at the given State.
+        
+        If the row State doesn't exist then raises a StateError.
+        If the action Action doesn't does't exist for the State then raises an
+        ActionError.
+        """
+
+        try:
+            return super.__getitem__(state, action)
+        except RowError:
+            raise StateError(
+                f"The State {state} does not exist in the QTable, please "
+                + "check your initial list of States is comprehensive."
+            )
+        except ColumnError:
+            raise ActionError(
+                f"The State-Action pair {(state, action)} does not exist in "
+                + "the QTable, please check your initial list of States "
+                + "and Actions is comprehensive."
+            )
+
+    def update(
+        self,
+        state: State,
+        action: Action,
+        reward: float,
+        learning_rate: float,
+        discount_rate: float,
+        next_best_q: float,
+    ) -> None:
+        """Update the Q-value in self at the given State, Action."""
+
+        self[state, action] = (1 - learning_rate) * self[state, action] + \
+            learning_rate * (reward +  discount_rate * next_best_q)
