@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import Hashable
 
 from q_learning.state.state_error import StateError
