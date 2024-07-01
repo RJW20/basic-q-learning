@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Hashable
 
 from q_learning.state.state_error import StateError
@@ -21,3 +22,11 @@ class State:
     def __hash__(self) -> int:
         """Return the hash of this States identifier."""
         return hash(self._identifier)
+    
+    def __eq__(self, other: State) -> bool:
+        """Return True if both States have the same __hash__."""
+        return self.__hash__() == other.__hash__()
+
+    def __repr__(self) -> str:
+        """Return representation of this State."""
+        return f'<State: Identifier = {self._identifier}>'
