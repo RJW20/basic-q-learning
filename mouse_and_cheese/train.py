@@ -20,12 +20,11 @@ class Train(BaseVisual):
         super().__init__(settings)
         pg.display.set_caption("Mouse finds Cheese")
 
-        self.start = start
         self.cats = cats
         self.cheese = cheese
 
-        learning_rate = 1
-        discount_factor = 0.5
+        learning_rate = settings['learning_rate']
+        discount_factor = settings['discount_factor']
 
         # Create all the States and Actions
         states = {State((x, y)) for x in range(0, self.grid_size[0])
@@ -66,7 +65,7 @@ class Train(BaseVisual):
         reward_table = RewardTable(states_actions_rewards)
         q_table = QTable(states_and_actions)
         self.mouse = Agent(
-            State((self.start)),
+            State((start)),
             reward_table,
             q_table,
             learning_rate,
@@ -101,16 +100,3 @@ class Train(BaseVisual):
             self.mouse.next_state()
             self.update_screen()
             self.clock.tick(100)
-
-
-if __name__ == '__main__':
-
-    grid_size = (15, 10)
-    settings = {'grid_size': grid_size}
-    start = (0, 0)
-    cats = {(i, 3) for i in range(0, grid_size[0] - 2)} | \
-                    {(i, 7) for i in range(2, grid_size[0])}
-    cheese = (grid_size[0] - 1, grid_size[1] - 1)
-
-    t = Train(settings, start, cats, cheese)
-    t.run()
