@@ -23,12 +23,12 @@ class QTable(Table):
 
     def new_actions(self, state: State, actions: list[Action]) -> None:
         """Create an entry in self for the row State with the given Actions and
-        the initial values 0.
+        the initial values 1.
         
         If the row State already exists then raises a StateError.
         """
 
-        actions_and_initials = [(action, 0) for action in actions]
+        actions_and_initials = [(action, 1) for action in actions]
 
         try:
             super().new_row(state, actions_and_initials)
