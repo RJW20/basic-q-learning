@@ -76,14 +76,15 @@ class Design(BaseVisual):
         entity_rect.center = pos
         match self.current_entity:
             case Entity.CAT:
-                color = 'black'
+                sprite = super().cat_sprite
             case Entity.CHEESE:
-                color = 'yellow'
+                sprite = super().cheese_sprite
             case Entity.MOUSE:
-                color = 'grey'
+                sprite = super().mouse_sprite
             case Entity.NONE:
-                color = 'white'
-        pg.draw.rect(self.screen, color, entity_rect)
+                return
+        pg.transform.scale(sprite, (self.tile_size // 2, self.tile_size // 2))
+        self.screen.blit(sprite, entity_rect)
 
     def update_screen(self) -> None:
         """Draw the current frame to the screen."""

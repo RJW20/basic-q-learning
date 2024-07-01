@@ -1,4 +1,4 @@
-from functools import lru_cache
+from functools import cached_property, lru_cache
 
 import pygame as pg
 
@@ -67,32 +67,53 @@ class BaseVisual:
             position[1] * (self.PADDING + self.tile_size) + self.PADDING,
         )
     
+    @cached_property
+    def cat_sprite(self) -> pg.Surface:
+        """Return the Cats' sprite."""
+
+        cat_img = pg.image.load('resources/cat.png')
+        return pg.transform.scale(cat_img, (self.tile_size, self.tile_size))
+    
     def draw_cats(self) -> None:
         """Draw a Cat at all grid positions in self.cats."""
 
-        cats = [
+        cat_rects = [
             pg.Rect(
                 (self.grid_position_to_pixels(cat)),
                 (self.tile_size, self.tile_size)
             ) for cat in self.cats
         ]
-        for cat in cats:
-            pg.draw.rect(self.screen, 'black', cat)
+        for cat_rect in cat_rects:
+            self.screen.blit(self.cat_sprite, cat_rect)
+            
+    @cached_property
+    def cheese_sprite(self) -> pg.Surface:
+        """Return the Cheese's sprite."""
+
+        cheese_img = pg.image.load('resources/cheese.png')
+        return pg.transform.scale(cheese_img, (self.tile_size, self.tile_size))
     
     def draw_cheese(self) -> None:
         """Draw the Cheese on the grid."""
 
-        cheese = pg.Rect(
+        cheese_rect = pg.Rect(
             (self.grid_position_to_pixels(self.cheese)),
             (self.tile_size, self.tile_size),
         )
-        pg.draw.rect(self.screen, 'yellow', cheese)
+        self.screen.blit(self.cheese_sprite, cheese_rect)
+
+    @cached_property
+    def mouse_sprite(self) -> pg.Surface:
+        """Return the Mouse's sprite."""
+
+        mouse_img = pg.image.load('resources/mouse.png')
+        return pg.transform.scale(mouse_img, (self.tile_size, self.tile_size))
 
     def draw_mouse(self, mouse_position: tuple[int, int]) -> None:
         """Draw the Mouse on the grid."""
 
-        mouse = pg.Rect(
+        mouse_rect = pg.Rect(
             (self.grid_position_to_pixels(mouse_position)),
             (self.tile_size, self.tile_size),
         )
-        pg.draw.rect(self.screen, 'grey', mouse)
+        self.screen.blit(self.mouse_sprite, mouse_rect)
