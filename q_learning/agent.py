@@ -13,7 +13,7 @@ class Agent:
         reward_table: RewardTable,
         q_table: QTable,
         learning_rate: float,
-        discount_rate: float,
+        discount_factor: float,
     ) -> None:
 
         self.current_state: State = starting_state
@@ -25,7 +25,7 @@ class Agent:
         self.q_table: QTable = q_table
 
         self.learning_rate: float = learning_rate
-        self.discount_rate: float = discount_rate
+        self.discount_rate: float = discount_factor
 
     def next_state(self) -> None:
         """Choose and perform an Action using self.q_table.

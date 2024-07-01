@@ -105,10 +105,10 @@ class QTable(Table):
         action: Action,
         reward: float,
         learning_rate: float,
-        discount_rate: float,
+        discount_factor: float,
         next_best_q: float,
     ) -> None:
         """Update the Q-value in self at the given State, Action."""
 
         self[state, action] = (1 - learning_rate) * self[state, action] + \
-            learning_rate * (reward +  discount_rate * next_best_q)
+            learning_rate * (reward +  discount_factor * next_best_q)
