@@ -1,2 +1,2 @@
 class StateError(Exception):
-    """Custom Error for when a State cannot be instantiated."""
+    """Custom Error for issues with the State class."""
