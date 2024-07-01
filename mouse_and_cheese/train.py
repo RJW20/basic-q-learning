@@ -1,25 +1,35 @@
 import pygame as pg
 
+from mouse_and_cheese.base_visual import BaseVisual
 from q_learning import Action, Agent, QTable, RewardTable, State
 
 
-class Main:
+class Train(BaseVisual):
     """Class that trains a Mouse to get to the Cheese using simple
     Q-learning."""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        settings: dict,
+        start: tuple[int, int],
+        cats: set[tuple[int, int]],
+        cheese: tuple[int,int],
+    ) -> None:
+        
+        # Pygame initialisation
+        super().__init__(settings)
+        pg.display.set_caption("Mouse finds Cheese")
 
-        self.size = (10, 10)
-        self.start = (0, 0)
-        self.cats = {(i, 3) for i in range(0, self.size[0] - 2)} | \
-                    {(i, 7) for i in range(2, self.size[0])}
-        self.cheese = (self.size[0] - 1, self.size[1] - 1)
+        self.start = start
+        self.cats = cats
+        self.cheese = cheese
+
         learning_rate = 1
         discount_factor = 0.5
 
         # Create all the States and Actions
-        states = {State((x, y)) for x in range(0, self.size[0])
-                  for y in range(0, self.size[1])}
+        states = {State((x, y)) for x in range(0, self.grid_size[0])
+                  for y in range(0, self.grid_size[1])}
         actions = [
             Action(lambda x: (x[0], x[1] - 1)),     # Up
             Action(lambda x: (x[0] + 1, x[1])),     # Right
@@ -63,16 +73,6 @@ class Main:
             discount_factor,
         )
 
-        # Pygame initialisation
-        self.tile_size = 45
-        screen_size = (
-            self.size[0] * self.tile_size,
-            self.size[1] * self.tile_size
-        )
-        self.screen = pg.display.set_mode(screen_size)
-        pg.display.set_caption("Mouse finds Cheese")
-        self.clock = pg.time.Clock()
-
     def check_events(self) -> None:
         """Check for new user inputs."""
 
@@ -81,41 +81,14 @@ class Main:
             if event.type == pg.QUIT:
                 pg.quit()
 
-    def position_to_pixels(self, position: tuple[int, int]) -> None:
-        """Convert a State position to its pixel position."""
-        return position[0] * self.tile_size, position[1] * self.tile_size
-
     def update_screen(self) -> None:
         """Draw the current frame to the screen."""
 
-        # Wipe the last frame
         self.screen.fill('white')
-
-        # Draw the mouse
-        mouse = pg.Rect(
-            (self.position_to_pixels(self.mouse.current_state._identifier)),
-            (self.tile_size, self.tile_size),
-        )
-        pg.draw.rect(self.screen, 'grey', mouse)
-
-        # Draw the cats
-        cats = [
-            pg.Rect(
-                (self.position_to_pixels(cat)),
-                (self.tile_size, self.tile_size)
-            ) for cat in self.cats
-        ]
-        for cat in cats:
-            pg.draw.rect(self.screen, 'black', cat)
-
-        # Draw the cheese
-        cheese = pg.Rect(
-            (self.position_to_pixels(self.cheese)),
-            (self.tile_size, self.tile_size),
-        )
-        pg.draw.rect(self.screen, 'yellow', cheese)
-
-        #update the screen
+        super().draw_grid()
+        super().draw_cats()
+        super().draw_cheese()
+        super().draw_mouse(self.mouse.current_state._identifier)
         pg.display.flip()
 
     def run(self) -> None:
@@ -129,6 +102,15 @@ class Main:
             self.update_screen()
             self.clock.tick(100)
 
+
 if __name__ == '__main__':
-    main = Main()
-    main.run()
+
+    grid_size = (15, 10)
+    settings = {'grid_size': grid_size}
+    start = (0, 0)
+    cats = {(i, 3) for i in range(0, grid_size[0] - 2)} | \
+                    {(i, 7) for i in range(2, grid_size[0])}
+    cheese = (grid_size[0] - 1, grid_size[1] - 1)
+
+    t = Train(settings, start, cats, cheese)
+    t.run()
