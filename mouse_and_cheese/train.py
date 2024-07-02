@@ -1,3 +1,5 @@
+import math
+
 import pygame as pg
 
 from mouse_and_cheese.base_visual import BaseVisual
@@ -19,6 +21,8 @@ class Train(BaseVisual):
         # Pygame initialisation
         super().__init__(settings)
         pg.display.set_caption("Mouse finds Cheese")
+        self.base_speed = 120
+        self.speed_multiplier = 1
 
         # Store the set up
         self.cats = cats
@@ -97,6 +101,15 @@ class Train(BaseVisual):
 
             if event.type == pg.QUIT:
                 pg.quit()
+                exit()
+
+            elif event.type == pg.KEYDOWN:
+
+                if event.key == pg.K_RIGHT:
+                    self.speed_multiplier *= 2
+
+                elif event.key == pg.K_LEFT:
+                    self.speed_multiplier /= 2
 
     def update_screen(self) -> None:
         """Draw the current frame to the screen."""
@@ -117,4 +130,4 @@ class Train(BaseVisual):
             self.check_events()
             self.mouse.next_state()
             self.update_screen()
-            self.clock.tick(100)
+            self.clock.tick(math.ceil(self.base_speed * self.speed_multiplier))
