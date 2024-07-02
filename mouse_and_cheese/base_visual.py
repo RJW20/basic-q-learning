@@ -71,7 +71,7 @@ class BaseVisual:
     def cat_sprite(self) -> pg.Surface:
         """Return the Cats' sprite."""
 
-        cat_img = pg.image.load('resources/cat.png')
+        cat_img = pg.image.load('mouse_and_cheese/resources/cat.png')
         return pg.transform.scale(cat_img, (self.tile_size, self.tile_size))
     
     def draw_cats(self) -> None:
@@ -90,7 +90,7 @@ class BaseVisual:
     def cheese_sprite(self) -> pg.Surface:
         """Return the Cheese's sprite."""
 
-        cheese_img = pg.image.load('resources/cheese.png')
+        cheese_img = pg.image.load('mouse_and_cheese/resources/cheese.png')
         return pg.transform.scale(cheese_img, (self.tile_size, self.tile_size))
     
     def draw_cheese(self) -> None:
@@ -106,7 +106,7 @@ class BaseVisual:
     def mouse_sprite(self) -> pg.Surface:
         """Return the Mouse's sprite."""
 
-        mouse_img = pg.image.load('resources/mouse.png')
+        mouse_img = pg.image.load('mouse_and_cheese/resources/mouse.png')
         return pg.transform.scale(mouse_img, (self.tile_size, self.tile_size))
 
     def draw_mouse(self, mouse_position: tuple[int, int]) -> None:
